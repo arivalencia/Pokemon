@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Pokemon</string>
+    <string name="search">Buscar</string>
+    <string name="no_data">Sin datos</string>
+    <string name="experience">Experiencia</string>
+    <string name="height">Altura</string>
+    <string name="id">ID</string>
+    <string name="next">Siguiente</string>
+    <string name="previous">Anterior</string>
+    <string name="abilities">Abilidades</string>
+    <string name="name">Nombre</string>
+</resources>
