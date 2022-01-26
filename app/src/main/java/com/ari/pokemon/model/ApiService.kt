@@ -1,6 +1,6 @@
 package com.ari.pokemon.model
 
-import com.ari.pokemon.tools.constants.Constants
+import com.ari.pokemon.core.constants.Constants
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

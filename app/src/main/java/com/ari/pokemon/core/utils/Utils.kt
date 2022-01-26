@@ -1,4 +1,4 @@
-package com.ari.pokemon.tools.utils
+package com.ari.pokemon.core.utils
 
 object Utils {
 

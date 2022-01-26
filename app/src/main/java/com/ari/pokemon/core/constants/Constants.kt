@@ -1,4 +1,4 @@
-package com.ari.pokemon.tools.constants
+package com.ari.pokemon.core.constants
 
 object Constants {
 

@@ -19,8 +19,8 @@
         android:name="com.ari.pokemon.ui.PokemonDetailFragment"
         android:label="PokemonDetailFragment"
         tools:layout="@layout/fragment_pokemon_detail">
-        <action
-            android:id="@+id/action_pokemonDetailFragment_to_pokemonListFragment"
-            app:destination="@id/pokemonListFragment" />
+<!--        <action-->
+<!--            android:id="@+id/action_pokemonDetailFragment_to_pokemonListFragment"-->
+<!--            app:destination="@id/pokemonListFragment" />-->
     </fragment>
 </navigation>

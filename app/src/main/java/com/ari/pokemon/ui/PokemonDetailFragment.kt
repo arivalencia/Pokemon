@@ -1,27 +1,30 @@
 package com.ari.pokemon.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import com.ari.pokemon.R
+import com.ari.pokemon.core.Toast
 import com.ari.pokemon.databinding.FragmentPokemonDetailBinding
 import com.ari.pokemon.viewModel.PokemonViewModel
+import com.ari.pokemon.viewModel.Result
 import com.ari.pokemon.model.pojos.SinglePokemon as SinglePokemon1
 
 class PokemonDetailFragment: Fragment() {
 
-    private val TAG = PokemonDetailFragment::class.java.simpleName
+    companion object {
+        const val POKEMON_EXTRA = "POKEMON_EXTRA"
+    }
+
     private lateinit var binding: FragmentPokemonDetailBinding
+
     private lateinit var viewModel: PokemonViewModel
-    private var singlePokemon: SinglePokemon1? = null
     private lateinit var abilitiesAdapter: NameAdapter
     private lateinit var typesAdapter: NameAdapter
+    private var singlePokemon: SinglePokemon1? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,19 +39,32 @@ class PokemonDetailFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         init()
-        setOnClickListeners();
+        setOnClickListeners()
         observePokemon()
 
-        singlePokemon = arguments?.getParcelable("pokemon")
+        singlePokemon = arguments?.getParcelable(POKEMON_EXTRA)
 
-        if (singlePokemon == null) {
-            // No data
-            showToast(getString(R.string.no_data))
-        } else {
+        singlePokemon?.let {
             // Get pokemon data
-            viewModel.getPokemonByUrl(singlePokemon!!.url)
-        }
+            getPokemonByUrl(it.url)
 
+        } ?: Toast.show(requireContext(), getString(R.string.no_data))
+
+    }
+
+    private fun observePokemon() {
+        viewModel.pokemonObservable.observe(requireActivity()) { result ->
+            when(result) {
+                is Result.Loading -> { }
+                is Result.Error -> Toast.show(requireContext(), result.error!!)
+                is Result.Success -> {
+                    val pokemon = result.result!!
+                    binding.pokemon = pokemon
+                    abilitiesAdapter.setList(pokemon.abilities.map { it.ability })
+                    typesAdapter.setList(pokemon.types.map { it.type })
+                }
+            }
+        }
     }
 
     private fun setOnClickListeners() {
@@ -59,23 +75,10 @@ class PokemonDetailFragment: Fragment() {
         // On click button previous
         binding.btnPrevious.setOnClickListener { previousPokemon() }
 
-        binding.imgBack.setOnClickListener { Navigation.findNavController(binding.root).navigate(R.id.pokemonListFragment) }
+        binding.imgBack.setOnClickListener { requireActivity().onBackPressed() }
     }
 
-    private fun observePokemon() {
-        // On SUCCESS request
-        viewModel.getPokemonObservable().observe(requireActivity()){ pokemon ->
-            Log.e(TAG, pokemon.toString())
-            binding.pokemon = pokemon
-            abilitiesAdapter.setList(pokemon.abilities.map { it.ability })
-            typesAdapter.setList(pokemon.types.map { it.type })
-        }
-
-        // On FAILURE request
-        viewModel.getPokemonErrorObservable().observe(requireActivity()){ error ->
-            showToast(error)
-        }
-    }
+    private fun getPokemonByUrl(url: String) = viewModel.getPokemonByUrl(url)
 
     private fun init() {
         // Init PokemonViewModel
@@ -89,22 +92,14 @@ class PokemonDetailFragment: Fragment() {
         binding.listTypes.adapter = typesAdapter
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
-
     private fun nextPokemon() {
-        val currentPokemon = viewModel.nextPokemon(singlePokemon)
-        if (currentPokemon != null) {
-            singlePokemon = currentPokemon
-        }
+        val nextPokemon = viewModel.nextPokemon(singlePokemon)
+        nextPokemon?.let { singlePokemon = it }
     }
 
     private fun previousPokemon() {
-        val currentPokemon = viewModel.previousPokemon(singlePokemon)
-        if (currentPokemon != null) {
-            singlePokemon = currentPokemon
-        }
+        val previous = viewModel.previousPokemon(singlePokemon)
+        previous?.let { singlePokemon = it }
     }
 
 }

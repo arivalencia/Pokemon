@@ -6,18 +6,21 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.ari.pokemon.R
+import com.ari.pokemon.core.Toast
 import com.ari.pokemon.databinding.FragmentPokemonListBinding
 import com.ari.pokemon.viewModel.PokemonViewModel
+import com.ari.pokemon.viewModel.Result
 
 class PokemonListFragment: Fragment() {
 
-    private lateinit var binding: FragmentPokemonListBinding
+    private var _binding: FragmentPokemonListBinding? = null
+    private val binding: FragmentPokemonListBinding get() = _binding!!
+
     private lateinit var viewModel: PokemonViewModel
     private lateinit var pokemonListAdapter: PokemonAdapter
 
@@ -27,7 +30,7 @@ class PokemonListFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Init layout
-        binding = FragmentPokemonListBinding.inflate(layoutInflater)
+        _binding = FragmentPokemonListBinding.inflate(layoutInflater)
         return binding.root
     }
 
@@ -58,14 +61,12 @@ class PokemonListFragment: Fragment() {
     }
 
     private fun observePokemonList() {
-        // On SUCCESS request
-        viewModel.getPokemonListToShowObservable().observe(requireActivity()){ pokemonList ->
-            pokemonListAdapter.setList(pokemonList)
-        }
-
-        // On FAILURE request
-        viewModel.getPokemonListErrorObservable().observe(requireActivity()){ error ->
-            Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
+        viewModel.pokemonListToShowObservable.observe(requireActivity()) { result ->
+            when(result) {
+                is Result.Loading -> { }
+                is Result.Error -> Toast.show(requireContext(), result.error!!)
+                is Result.Success -> pokemonListAdapter.setList(result.result!!)
+            }
         }
     }
 
@@ -76,11 +77,16 @@ class PokemonListFragment: Fragment() {
 
         // Init PokemonAdapter
         pokemonListAdapter = PokemonAdapter { singlePokemon ->
-            val bundle = bundleOf("pokemon" to singlePokemon)
+            val bundle = bundleOf(PokemonDetailFragment.POKEMON_EXTRA to singlePokemon)
             Navigation.findNavController(binding.root).navigate(R.id.pokemonDetailFragment, bundle)
         }
         // Set adapter to recyclerView
         binding.pokemonList.adapter = pokemonListAdapter
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
