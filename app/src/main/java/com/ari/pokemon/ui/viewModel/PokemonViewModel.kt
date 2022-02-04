@@ -1,14 +1,17 @@
-package com.ari.pokemon.viewModel
+package com.ari.pokemon.ui.viewModel
 
 import androidx.lifecycle.*
-import com.ari.pokemon.model.pojos.Pokemon
-import com.ari.pokemon.model.pojos.SinglePokemon
-import com.ari.pokemon.model.repository.PokemonRepository
+import com.ari.pokemon.data.model.Pokemon
+import com.ari.pokemon.data.model.SinglePokemon
+import com.ari.pokemon.data.network.repository.PokemonRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PokemonViewModel: ViewModel() {
-
-    private val repository: PokemonRepository = PokemonRepository()
+@HiltViewModel
+class PokemonViewModel @Inject constructor(
+    private val repository: PokemonRepository
+): ViewModel() {
 
     private val pokemonListToShow = MutableLiveData<Result<List<SinglePokemon>>>() // Response to show
     val pokemonListToShowObservable: LiveData<Result<List<SinglePokemon>>> = pokemonListToShow

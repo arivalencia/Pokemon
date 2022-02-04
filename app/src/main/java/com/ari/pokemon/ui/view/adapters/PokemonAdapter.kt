@@ -1,10 +1,10 @@
-package com.ari.pokemon.ui
+package com.ari.pokemon.ui.view.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ari.pokemon.databinding.ItemPokemonBinding
-import com.ari.pokemon.model.pojos.SinglePokemon
+import com.ari.pokemon.data.model.SinglePokemon
 
 class PokemonAdapter(
     private val listener: (element: SinglePokemon) -> Unit // listener for item click pokemon

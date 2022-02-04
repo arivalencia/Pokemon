@@ -1,4 +1,4 @@
-package com.ari.pokemon.ui
+package com.ari.pokemon.ui.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,10 +9,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.ari.pokemon.R
 import com.ari.pokemon.core.Toast
 import com.ari.pokemon.databinding.FragmentPokemonDetailBinding
-import com.ari.pokemon.viewModel.PokemonViewModel
-import com.ari.pokemon.viewModel.Result
-import com.ari.pokemon.model.pojos.SinglePokemon as SinglePokemon1
+import com.ari.pokemon.ui.view.adapters.NameAdapter
+import com.ari.pokemon.ui.viewModel.PokemonViewModel
+import com.ari.pokemon.ui.viewModel.Result
+import dagger.hilt.android.AndroidEntryPoint
+import com.ari.pokemon.data.model.SinglePokemon as SinglePokemon1
 
+@AndroidEntryPoint
 class PokemonDetailFragment: Fragment() {
 
     companion object {

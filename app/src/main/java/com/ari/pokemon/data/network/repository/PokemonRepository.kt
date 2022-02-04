@@ -1,19 +1,21 @@
-package com.ari.pokemon.model.repository
+package com.ari.pokemon.data.network.repository
 
-import com.ari.pokemon.model.ApiService
-import com.ari.pokemon.model.PokemonApi
-import com.ari.pokemon.model.pojos.Pokemon
-import com.ari.pokemon.model.pojos.PokemonListResponse
-import com.ari.pokemon.viewModel.Result
+import com.ari.pokemon.data.network.PokemonApi
+import com.ari.pokemon.data.model.Pokemon
+import com.ari.pokemon.data.model.PokemonListResponse
+import com.ari.pokemon.ui.viewModel.Result
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class PokemonRepository {
-
-    private val api: PokemonApi = ApiService.createService(PokemonApi::class.java)
+@Singleton
+class PokemonRepository @Inject constructor(
+    private val pokemonApi: PokemonApi
+) {
 
     private val GENERIC_ERROR = "__Error__"
 
     suspend fun getPokemonList(limit: Int = 500): Result<PokemonListResponse> = try {
-        val response = api.getPokemonList()
+        val response = pokemonApi.getPokemonList()
 
         if(response.isSuccessful) {
             response.body()?.let {
@@ -28,7 +30,7 @@ class PokemonRepository {
     }
 
     suspend fun getPokemonByUrl(url: String): Result<Pokemon> = try {
-        val response = api.getPokemonByUrl(url)
+        val response = pokemonApi.getPokemonByUrl(url)
 
         if(response.isSuccessful) {
             response.body()?.let {
@@ -41,7 +43,5 @@ class PokemonRepository {
     } catch (e: Exception) {
         Result.Error(e.message ?: GENERIC_ERROR)
     }
-
-
 
 }

@@ -1,4 +1,4 @@
-package com.ari.pokemon.model
+package com.ari.pokemon.data.network
 
 import com.ari.pokemon.core.constants.Constants
 import retrofit2.Retrofit

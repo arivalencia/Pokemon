@@ -1,10 +1,10 @@
-package com.ari.pokemon.ui
+package com.ari.pokemon.ui.view.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ari.pokemon.databinding.ItemNameBinding
-import com.ari.pokemon.model.pojos.Item
+import com.ari.pokemon.data.model.Item
 
 class NameAdapter: RecyclerView.Adapter<NameAdapter.ViewHolder>() {
 

@@ -1,4 +1,4 @@
-package com.ari.pokemon.viewModel
+package com.ari.pokemon.ui.viewModel
 
 sealed class Result<T>(
     val result: T? = null,

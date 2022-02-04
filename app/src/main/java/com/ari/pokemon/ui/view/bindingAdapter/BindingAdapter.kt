@@ -1,9 +1,10 @@
-package com.ari.pokemon.ui.bindingAdapter
+package com.ari.pokemon.ui.view.bindingAdapter
 
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.ari.pokemon.R
+import com.ari.pokemon.core.extensions.isValid
 import com.ari.pokemon.core.utils.GlideUtils
 import com.ari.pokemon.core.utils.Utils
 

@@ -1,4 +1,4 @@
-package com.ari.pokemon.model.pojos
+package com.ari.pokemon.data.model
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,11 +1,9 @@
-package com.ari.pokemon.model
+package com.ari.pokemon.data.network
 
-import com.ari.pokemon.model.pojos.Pokemon
-import com.ari.pokemon.model.pojos.PokemonListResponse
-import retrofit2.Call
+import com.ari.pokemon.data.model.Pokemon
+import com.ari.pokemon.data.model.PokemonListResponse
 import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.Url
 

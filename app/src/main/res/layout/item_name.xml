@@ -6,7 +6,7 @@
     <data>
         <variable
             name="item"
-            type="com.ari.pokemon.model.pojos.Item" />
+            type="com.ari.pokemon.data.model.Item" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

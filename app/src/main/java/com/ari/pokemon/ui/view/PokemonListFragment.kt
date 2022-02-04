@@ -1,4 +1,4 @@
-package com.ari.pokemon.ui
+package com.ari.pokemon.ui.view
 
 import android.os.Bundle
 import android.text.Editable
@@ -13,9 +13,12 @@ import androidx.navigation.Navigation
 import com.ari.pokemon.R
 import com.ari.pokemon.core.Toast
 import com.ari.pokemon.databinding.FragmentPokemonListBinding
-import com.ari.pokemon.viewModel.PokemonViewModel
-import com.ari.pokemon.viewModel.Result
+import com.ari.pokemon.ui.view.adapters.PokemonAdapter
+import com.ari.pokemon.ui.viewModel.PokemonViewModel
+import com.ari.pokemon.ui.viewModel.Result
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PokemonListFragment: Fragment() {
 
     private var _binding: FragmentPokemonListBinding? = null

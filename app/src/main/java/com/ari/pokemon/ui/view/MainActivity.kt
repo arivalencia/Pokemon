@@ -1,9 +1,11 @@
-package com.ari.pokemon.ui
+package com.ari.pokemon.ui.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.ari.pokemon.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding;
