@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.ari.pokemon.BR
 import com.ari.pokemon.R
 import com.ari.pokemon.core.Toast
+import com.ari.pokemon.data.model.Item
 import com.ari.pokemon.databinding.FragmentPokemonDetailBinding
-import com.ari.pokemon.ui.view.adapters.NameAdapter
 import com.ari.pokemon.ui.viewModel.PokemonViewModel
 import com.ari.pokemon.ui.viewModel.Result
+import com.novu.adapter.GAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import com.ari.pokemon.data.model.SinglePokemon as SinglePokemon1
 
@@ -25,8 +27,8 @@ class PokemonDetailFragment: Fragment() {
     private lateinit var binding: FragmentPokemonDetailBinding
 
     private lateinit var viewModel: PokemonViewModel
-    private lateinit var abilitiesAdapter: NameAdapter
-    private lateinit var typesAdapter: NameAdapter
+    private lateinit var abilitiesAdapter: GAdapter<Item>
+    private lateinit var typesAdapter: GAdapter<Item>
     private var singlePokemon: SinglePokemon1? = null
 
     override fun onCreateView(
@@ -88,10 +90,10 @@ class PokemonDetailFragment: Fragment() {
         viewModel = ViewModelProvider(requireActivity()).get(PokemonViewModel::class.java)
 
         // Init adapters for lists
-        abilitiesAdapter = NameAdapter()
+        abilitiesAdapter = GAdapter(R.layout.item_name, BR.item)
         binding.listAbilities.adapter = abilitiesAdapter
 
-        typesAdapter = NameAdapter()
+        typesAdapter = GAdapter(R.layout.item_name, BR.item)
         binding.listTypes.adapter = typesAdapter
     }
 

@@ -10,12 +10,14 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import com.ari.pokemon.BR
 import com.ari.pokemon.R
 import com.ari.pokemon.core.Toast
+import com.ari.pokemon.data.model.SinglePokemon
 import com.ari.pokemon.databinding.FragmentPokemonListBinding
-import com.ari.pokemon.ui.view.adapters.PokemonAdapter
 import com.ari.pokemon.ui.viewModel.PokemonViewModel
 import com.ari.pokemon.ui.viewModel.Result
+import com.novu.adapter.GAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,7 +27,7 @@ class PokemonListFragment: Fragment() {
     private val binding: FragmentPokemonListBinding get() = _binding!!
 
     private lateinit var viewModel: PokemonViewModel
-    private lateinit var pokemonListAdapter: PokemonAdapter
+    private lateinit var pokemonListAdapter: GAdapter<SinglePokemon>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -79,10 +81,12 @@ class PokemonListFragment: Fragment() {
         viewModel = ViewModelProvider(requireActivity()).get(PokemonViewModel::class.java)
 
         // Init PokemonAdapter
-        pokemonListAdapter = PokemonAdapter { singlePokemon ->
-            val bundle = bundleOf(PokemonDetailFragment.POKEMON_EXTRA to singlePokemon)
-            Navigation.findNavController(binding.root).navigate(R.id.pokemonDetailFragment, bundle)
-        }
+        pokemonListAdapter = GAdapter(R.layout.item_pokemon, BR.pokemon, object: GAdapter.BaseListener<SinglePokemon>{
+            override fun onClickItem(singlePokemon: SinglePokemon, position: Int) {
+                val bundle = bundleOf(PokemonDetailFragment.POKEMON_EXTRA to singlePokemon)
+                Navigation.findNavController(binding.root).navigate(R.id.pokemonDetailFragment, bundle)
+            }
+        })
         // Set adapter to recyclerView
         binding.pokemonList.adapter = pokemonListAdapter
 
