@@ -1,4 +1,4 @@
-package com.ari.pokemon.ui.view
+package com.ari.pokemon.presentation.view
 
 import android.os.Bundle
 import android.text.Editable
@@ -12,11 +12,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.ari.pokemon.BR
 import com.ari.pokemon.R
-import com.ari.pokemon.core.Toast
-import com.ari.pokemon.data.model.SinglePokemon
+import com.ari.pokemon.core.Toaster
 import com.ari.pokemon.databinding.FragmentPokemonListBinding
-import com.ari.pokemon.ui.viewModel.PokemonViewModel
-import com.ari.pokemon.ui.viewModel.Result
+import com.ari.pokemon.domain.model.ResultDomain
+import com.ari.pokemon.domain.model.SinglePokemonDomain
+import com.ari.pokemon.presentation.viewModel.PokemonViewModel
 import com.novu.adapter.GAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,7 +27,7 @@ class PokemonListFragment: Fragment() {
     private val binding: FragmentPokemonListBinding get() = _binding!!
 
     private lateinit var viewModel: PokemonViewModel
-    private lateinit var pokemonListAdapter: GAdapter<SinglePokemon>
+    private lateinit var pokemonListAdapter: GAdapter<SinglePokemonDomain>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,9 +68,9 @@ class PokemonListFragment: Fragment() {
     private fun observePokemonList() {
         viewModel.pokemonListToShowObservable.observe(requireActivity()) { result ->
             when(result) {
-                is Result.Loading -> { }
-                is Result.Error -> Toast.show(requireContext(), result.error!!)
-                is Result.Success -> pokemonListAdapter.setList(result.result!!)
+                is ResultDomain.Loading -> { }
+                is ResultDomain.Error -> Toaster.show(requireContext(), result.error!!)
+                is ResultDomain.Success -> pokemonListAdapter.setList(result.result)
             }
         }
     }
@@ -81,8 +81,8 @@ class PokemonListFragment: Fragment() {
         viewModel = ViewModelProvider(requireActivity()).get(PokemonViewModel::class.java)
 
         // Init PokemonAdapter
-        pokemonListAdapter = GAdapter(R.layout.item_pokemon, BR.pokemon, object: GAdapter.BaseListener<SinglePokemon>{
-            override fun onClickItem(singlePokemon: SinglePokemon, position: Int) {
+        pokemonListAdapter = GAdapter(R.layout.item_pokemon, BR.pokemon, object: GAdapter.BaseListener<SinglePokemonDomain>{
+            override fun onClickItem(singlePokemon: SinglePokemonDomain, position: Int) {
                 val bundle = bundleOf(PokemonDetailFragment.POKEMON_EXTRA to singlePokemon)
                 Navigation.findNavController(binding.root).navigate(R.id.pokemonDetailFragment, bundle)
             }

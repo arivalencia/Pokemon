@@ -1,6 +1,6 @@
 package com.ari.pokemon.di
 
-import com.ari.pokemon.data.network.PokemonApi
+import com.ari.pokemon.framework.PokemonApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

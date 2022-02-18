@@ -1,4 +1,4 @@
-package com.ari.pokemon.ui.view
+package com.ari.pokemon.presentation.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

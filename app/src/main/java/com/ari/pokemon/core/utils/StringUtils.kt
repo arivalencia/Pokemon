@@ -1,6 +1,6 @@
 package com.ari.pokemon.core.utils
 
-object Utils {
+object StringUtils {
 
     fun isValidString(s: String?): Boolean {
         if (s == null) return false

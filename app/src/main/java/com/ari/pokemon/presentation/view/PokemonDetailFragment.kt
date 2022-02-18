@@ -1,4 +1,4 @@
-package com.ari.pokemon.ui.view
+package com.ari.pokemon.presentation.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,14 +8,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.ari.pokemon.BR
 import com.ari.pokemon.R
-import com.ari.pokemon.core.Toast
-import com.ari.pokemon.data.model.Item
+import com.ari.pokemon.core.Toaster
 import com.ari.pokemon.databinding.FragmentPokemonDetailBinding
-import com.ari.pokemon.ui.viewModel.PokemonViewModel
-import com.ari.pokemon.ui.viewModel.Result
+import com.ari.pokemon.domain.model.ItemDomain
+import com.ari.pokemon.domain.model.ResultDomain
+import com.ari.pokemon.domain.model.SinglePokemonDomain
+import com.ari.pokemon.presentation.viewModel.PokemonViewModel
 import com.novu.adapter.GAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import com.ari.pokemon.data.model.SinglePokemon as SinglePokemon1
 
 @AndroidEntryPoint
 class PokemonDetailFragment: Fragment() {
@@ -27,9 +27,9 @@ class PokemonDetailFragment: Fragment() {
     private lateinit var binding: FragmentPokemonDetailBinding
 
     private lateinit var viewModel: PokemonViewModel
-    private lateinit var abilitiesAdapter: GAdapter<Item>
-    private lateinit var typesAdapter: GAdapter<Item>
-    private var singlePokemon: SinglePokemon1? = null
+    private lateinit var abilitiesAdapter: GAdapter<ItemDomain>
+    private lateinit var typesAdapter: GAdapter<ItemDomain>
+    private var singlePokemon: SinglePokemonDomain? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,16 +53,16 @@ class PokemonDetailFragment: Fragment() {
             // Get pokemon data
             getPokemonByUrl(it.url)
 
-        } ?: Toast.show(requireContext(), getString(R.string.no_data))
+        } ?: Toaster.show(requireContext(), getString(R.string.no_data))
 
     }
 
     private fun observePokemon() {
         viewModel.pokemonObservable.observe(requireActivity()) { result ->
             when(result) {
-                is Result.Loading -> { }
-                is Result.Error -> Toast.show(requireContext(), result.error!!)
-                is Result.Success -> {
+                is ResultDomain.Loading -> { }
+                is ResultDomain.Error -> Toaster.show(requireContext(), result.error!!)
+                is ResultDomain.Success -> {
                     val pokemon = result.result!!
                     binding.pokemon = pokemon
                     abilitiesAdapter.setList(pokemon.abilities.map { it.ability })
